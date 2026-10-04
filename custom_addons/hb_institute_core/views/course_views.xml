@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="view_course_list" model="ir.ui.view">
+        <field name="name">course.list</field>
+        <field name="model">course</field>
+        <field name="arch" type="xml">
+            <list string="Courses">
+                <field name="name" />
+                <field name="code" />
+                <field name="duration" />
+                <field name="fees" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_course_form" model="ir.ui.view">
+        <field name="name">course.form</field>
+        <field name="model">course</field>
+        <field name="arch" type="xml">
+
+            <form string="Course">
+
+                <sheet>
+
+                    <group>
+
+                        <group>
+                            <field name="name" />
+                            <field name="code" />
+                            <field name="duration" />
+                        </group>
+
+                        <group>
+                            <field name="fees" />
+                            <field name="active" />
+                        </group>
+
+                    </group>
+
+                    <notebook>
+
+                        <page string="Description">
+                            <field name="description" />
+                        </page>
+
+                        <page string="Students">
+
+                            <field name="student_ids">
+
+                                <list editable="bottom">
+
+                                    <field name="name" />
+                                    <field name="mobile" />
+                                    <field name="email" />
+                                    <field name="admission_date" />
+                                    <field name="status" />
+
+                                </list>
+
+                            </field>
+
+                        </page>
+
+                    </notebook>
+                </sheet>
+
+            </form>
+
+        </field>
+    </record>
+
+
+    <record id="action_course" model="ir.actions.act_window">
+
+        <field name="name">Courses</field>
+        <field name="res_model">course</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+
+    <menuitem
+        id="menu_course"
+        name="Courses"
+        parent="menu_hb_institute_root"
+        action="action_course"
+        sequence="20" />
+
+</odoo>

@@ -16,9 +16,13 @@
     "depends": [
         "base",
     ],
-    "data": [
-        "security/ir.model.access.csv",
-        "views/student_views.xml",
+    'data': [
+        'security/ir.model.access.csv',
+        'data/enrollment_sequence.xml',
+        'views/student_views.xml',
+        'views/course_views.xml',
+        'views/batch_views.xml',
+        'views/enrollment_views.xml',
     ],
     "installable": True,
     "application": True,

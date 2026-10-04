@@ -108,3 +108,19 @@ class Student(models.Model):
         string="Active",
         default=True,
     )
+
+    course_id = fields.Many2one(
+        "course",
+        string = "Course"
+    )
+
+    batch_id = fields.Many2one(
+        "batch",
+        string = "Batch"
+    )
+
+    enrollment_ids = fields.One2many(
+        "enrollment",
+        "student_id",
+        string = "Enrollments"
+    )

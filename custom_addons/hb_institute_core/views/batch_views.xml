@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="view_batch_list" model="ir.ui.view">
+        <field name="name">batch.list</field>
+        <field name="model">batch</field>
+        <field name="arch" type="xml">
+
+            <list string="Batches">
+
+                <field name="name" />
+                <field name="course_id" />
+                <field name="faculty" />
+                <field name="start_date" />
+                <field name="end_date" />
+                <field name="capacity" />
+                <field name="status" />
+                <field name="active" />
+
+            </list>
+
+        </field>
+    </record>
+
+
+    <record id="view_batch_form" model="ir.ui.view">
+        <field name="name">batch.form</field>
+        <field name="model">batch</field>
+        <field name="arch" type="xml">
+
+            <form string="Batch">
+
+                <sheet>
+
+                    <group>
+
+                        <group>
+
+                            <field name="name" />
+                            <field name="course_id" />
+                            <field name="faculty" />
+
+                        </group>
+
+                        <group>
+
+                            <field name="status" />
+                            <field name="capacity" />
+                            <field name="active" />
+
+                        </group>
+
+                    </group>
+
+
+                    <group string="Schedule">
+
+                        <group>
+                            <field name="start_date" />
+                            <field name="start_time" />
+                        </group>
+
+                        <group>
+                            <field name="end_date" />
+                            <field name="end_time" />
+                        </group>
+
+                    </group>
+
+
+                    <notebook>
+
+                        <page string="Students">
+
+                            <field name="student_ids">
+
+                                <list editable="bottom">
+
+                                    <field name="name" />
+                                    <field name="mobile" />
+                                    <field name="email" />
+                                    <field name="admission_date" />
+                                    <field name="status" />
+
+                                </list>
+
+                            </field>
+
+                        </page>
+
+                        <page string="Notes">
+
+                            <field name="notes" />
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+
+        </field>
+    </record>
+
+
+    <record id="action_batch" model="ir.actions.act_window">
+
+        <field name="name">Batches</field>
+        <field name="res_model">batch</field>
+        <field name="view_mode">list,form</field>
+
+    </record>
+
+
+    <menuitem
+        id="menu_batch"
+        name="Batches"
+        parent="menu_hb_institute_root"
+        action="action_batch"
+        sequence="30" />
+
+</odoo>
