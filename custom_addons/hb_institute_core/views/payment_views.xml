@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- =====================================================
+         Payment List View
+         ===================================================== -->
+    <record id="view_payment_list" model="ir.ui.view">
+        <field name="name">payment.list</field>
+        <field name="model">payment</field>
+        <field name="arch" type="xml">
+            <list string="Payments">
+                <field name="name" />
+                <field name="payment_date" />
+                <field name="student_id" />
+                <field name="fee_id" />
+                <field name="amount" />
+                <field name="payment_method" />
+                <field name="reference" />
+            </list>
+        </field>
+    </record>
+
+
+    <!-- =====================================================
+         Payment Form View
+         ===================================================== -->
+
+    <record id="view_payment_form" model="ir.ui.view">
+        <field name="name">payment.form</field>
+        <field name="model">payment</field>
+        <field name="arch" type="xml">
+            <form string="Payment">
+                <sheet>
+                    <group>
+                        <div class="oe_title">
+                            <label for="name" string="Payemnt Reference" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. PAY/TEST/001" />
+                            </h1>
+                        </div>
+                    </group>
+
+                    
+                    <group string="Payment Details">
+                        <group>
+                            <field name="student_id" />
+                            <field name="fee_id" />
+                            <field name="fee_balance" string="Remaining Fee Balance" readonly="1"  />
+                            <field name="payment_date" />
+                        </group>
+                        <group>
+                            <field name="amount" />
+                            <field name="payment_method" />
+                            <field name="reference" />
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="note" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- =====================================================
+         Payment Action
+         ===================================================== -->
+
+    <record id="action_payment" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="res_model">payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <!-- =====================================================
+         Payment Menu
+         ===================================================== -->
+
+    <menuitem
+        id="menu_payment"
+        name="Payments"
+        parent="menu_hb_institute_root"
+        action="action_payment"
+        sequence="60" />
+
+</odoo>

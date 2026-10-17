@@ -16,6 +16,8 @@
                 <field name="end_date" />
                 <field name="capacity" />
                 <field name="status" />
+                <field name="enrolled_count" />
+                <field name="available_seats" />
                 <field name="active" />
 
             </list>
@@ -48,6 +50,13 @@
                             <field name="status" />
                             <field name="capacity" />
                             <field name="active" />
+
+                        </group>
+                        <group string="Capacity">
+
+                            <field name="capacity" />
+                            <field name="enrolled_count" readonly="1" />
+                            <field name="available_seats" readonly="1" />
 
                         </group>
 

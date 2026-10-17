@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class Batch(models.Model):
     _name = "batch"
@@ -48,7 +48,7 @@ class Batch(models.Model):
             ("running","Running"),
             ("completed","Completed"),
             ("cancelled","Cancelled")
-        ],
+        ], # type: ignore
         string = "Status",
         default = "planned",
         required = True
@@ -74,3 +74,26 @@ class Batch(models.Model):
         "batch_id",
         string = "Enrollments"
     )
+
+    enrolled_count = fields.Integer(
+        string = "Enrolled Students",
+        compute = "_compute_enrollment_stats",
+        store = True
+    )
+
+    available_seats = fields.Integer(
+        string="Available Seats",
+        compute = "_compute_enrollment_stats",
+        store = True
+    )
+
+    @api.depends("capacity","enrollment_ids.status")
+    def _compute_enrollment_stats(self):
+        for record in self:
+            enrolled = len(
+                record.enrollment_ids.filtered(
+                    lambda enrollment: enrollment.status in ("confirmed","completed") # type: ignore
+                )
+            )
+            record.enrolled_count = enrolled
+            record.available_seats = max(record.capacity - enrolled, 0)

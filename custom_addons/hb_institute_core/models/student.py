@@ -25,7 +25,7 @@ class Student(models.Model):
             ("male","Male"),
             ("female","Female"),
             ("other","Other")
-        ],
+        ], # type: ignore
         string = "Gender"
     )
 
@@ -89,7 +89,7 @@ class Student(models.Model):
             ("completed","Completed"),
             ("dropped","Dropped"),
             ("placed","Placed")
-        ],
+        ], # type: ignore
         string = "Status",
         default = "inquiry",
         required = False

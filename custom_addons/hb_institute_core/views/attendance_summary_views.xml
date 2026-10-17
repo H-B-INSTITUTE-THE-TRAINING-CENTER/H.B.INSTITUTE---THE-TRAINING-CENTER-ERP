@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Attendance Summary Wizard Form -->
+    <record id="view_attendance_summary_wizard_form" model="ir.ui.view">
+        <field name="name">attendance.summary.wizard.form</field>
+        <field name="model">attendance.summary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Summary">
+                <sheet>
+
+                    <group string="Report Configuration">
+                        <field name="report_type" />
+
+                        <field name="batch_id"
+                            invisible="report_type != 'daily'"
+                            required="report_type == 'daily'" />
+
+                        <field name="attendance_date"
+                            invisible="report_type != 'daily'"
+                            required="report_type == 'daily'" />
+
+                        <field name="date_from"
+                            invisible="report_type != 'range'"
+                            required="report_type == 'range'" />
+
+                        <field name="date_to"
+                            invisible="report_type != 'range'"
+                            required="report_type == 'range'" />
+                    </group>
+
+                    <separator string="Attendance Summary" />
+
+                    <group>
+                        <group>
+                            <field name="present_count" readonly="1" />
+                            <field name="absent_count" readonly="1" />
+                        </group>
+
+                        <group>
+                            <field name="late_count" readonly="1" />
+                            <field name="cancelled_count" readonly="1" />
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="attendance_percentage_display"
+                            string="Attendance Percentage"
+                            readonly="1" />
+                    </group>
+
+                </sheet>
+                <footer>
+                    <button name="action_generate_report"
+                        type="object"
+                        string="Generate Report"
+                        class="btn-primary" />
+                    <button string="Close"
+                        special="cancel"
+                        class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Attendance Summary Window Action -->
+    <record id="action_attendance_summary_wizard" model="ir.actions.act_window">
+        <field name="name">Attendance Summary</field>
+        <field name="res_model">attendance.summary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_attendance_summary_wizard_form" />
+        <field name="target">new</field>
+    </record>
+
+    <!-- Attendance Summary Menu -->
+    <menuitem id="menu_attendance_summary"
+        name="Attendance Summary"
+        parent="menu_attendance"
+        action="action_attendance_summary_wizard"
+        sequence="20" />
+
+</odoo>

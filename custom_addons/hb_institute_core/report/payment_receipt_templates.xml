@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="payment_receipt_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page"
+                        style="font-family: Arial, sans-serif; color: #222; font-size: 11px;">
+
+                        
+                        <!-- Report Title -->
+                        <h2 style="text-align: center; margin: 12px 0;">
+                            FEE PAYMENT RECEIPT &amp; STATEMENT
+                        </h2>
+
+                        <!-- Selected Receipt -->
+                        <table
+                            style="width: 100%; border-collapse: collapse;
+                                      margin-bottom: 12px;">
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 7px;">
+                                    <strong>Selected Receipt:</strong>
+                                    <span t-field="o.name" />
+                                </td>
+                                <td style="border: 1px solid #ccc; padding: 7px;">
+                                    <strong>Payment Date:</strong>
+                                    <span t-field="o.payment_date" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"
+                                    style="border: 1px solid #ccc; padding: 7px;">
+                                    <strong>Student:</strong>
+                                    <span t-field="o.student_id" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"
+                                    style="border: 1px solid #ccc; padding: 7px;">
+                                    <strong>Course:</strong>
+                                    <span t-field="o.fee_id.enrollment_id.course_id" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"
+                                    style="border: 1px solid #ccc; padding: 7px;">
+                                    <strong>Enrollment:</strong>
+                                    <span t-field="o.fee_id.enrollment_id.admission_number" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Fee Summary -->
+                        <h3
+                            style="background: #f2f2f2; padding: 7px;
+                                   border-left: 4px solid #f39c12; margin-bottom: 5px;">
+                            Fee Summary
+                        </h3>
+
+                        <table
+                            style="width: 100%; border-collapse: collapse;
+                                      margin-bottom: 12px;">
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 7px;">
+                                    Total Fees
+                                </td>
+                                <td
+                                    style="border: 1px solid #ddd; padding: 7px;
+                                           text-align: right;">
+                                    <span t-out="'₹ {:,.2f}'.format(o.fee_id.total_fees)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 7px;">
+                                    Discount
+                                </td>
+                                <td
+                                    style="border: 1px solid #ddd; padding: 7px;
+                                           text-align: right;">
+                                    <span t-out="'₹ {:,.2f}'.format(o.fee_id.discount)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ddd; padding: 7px;">
+                                    <strong>Final Fees Payable</strong>
+                                </td>
+                                <td
+                                    style="border: 1px solid #ddd; padding: 7px;
+                                           text-align: right;">
+                                    <strong>
+                                        <span t-out="'₹ {:,.2f}'.format(o.fee_id.final_fees)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- All Payments Against This Fee -->
+                        <h3
+                            style="background: #f2f2f2; padding: 7px;
+                                   border-left: 4px solid #f39c12; margin-bottom: 5px;">
+                            Complete Payment History
+                        </h3>
+
+                        <table
+                            style="width: 100%; border-collapse: collapse;
+                                      margin-bottom: 12px;">
+                            <thead>
+                                <tr style="background: #f8f8f8;">
+                                    <th
+                                        style="border: 1px solid #ccc; padding: 6px;
+                                               text-align: left;">
+                                        Receipt No.
+                                    </th>
+                                    <th
+                                        style="border: 1px solid #ccc; padding: 6px;
+                                               text-align: left;">
+                                        Date
+                                    </th>
+                                    <th
+                                        style="border: 1px solid #ccc; padding: 6px;
+                                               text-align: left;">
+                                        Method
+                                    </th>
+                                    <th
+                                        style="border: 1px solid #ccc; padding: 6px;
+                                               text-align: left;">
+                                        Transaction Ref.
+                                    </th>
+                                    <th
+                                        style="border: 1px solid #ccc; padding: 6px;
+                                               text-align: right;">
+                                        Amount
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.fee_id.payment_ids" t-as="payment">
+                                    <tr>
+                                        <td style="border: 1px solid #ddd; padding: 6px;">
+                                            <span t-field="payment.name" />
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 6px;">
+                                            <span t-field="payment.payment_date" />
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 6px;">
+                                            <span t-field="payment.payment_method" />
+                                        </td>
+                                        <td style="border: 1px solid #ddd; padding: 6px;">
+                                            <span t-field="payment.reference" />
+                                        </td>
+                                        <td
+                                            style="border: 1px solid #ddd; padding: 6px;
+                                                   text-align: right;">
+                                            <span t-out="'₹ {:,.2f}'.format(payment.amount)" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Totals -->
+                        <table
+                            style="width: 100%; border-collapse: collapse;
+                                      margin-bottom: 12px;">
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 8px;">
+                                    <strong>Total Amount Paid</strong>
+                                </td>
+                                <td
+                                    style="border: 1px solid #ccc; padding: 8px;
+                                           text-align: right;">
+                                    <strong>
+                                        <span t-out="'₹ {:,.2f}'.format(o.fee_id.amount_paid)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 8px;">
+                                    <strong>Outstanding Balance</strong>
+                                </td>
+                                <td
+                                    style="border: 1px solid #ccc; padding: 8px;
+                                           text-align: right;">
+                                    <strong>
+                                        <span t-out="'₹ {:,.2f}'.format(o.fee_id.balance)" />
+                                    </strong>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Acknowledgement -->
+                        <p style="margin-top: 10px;">
+                            This statement records all payments currently linked to
+                            the fee shown above. Please retain it for your records.
+                        </p>
+
+                        <!-- Signature -->
+                        <!-- <div
+                            style="width: 230px; margin-left: auto;
+                                    margin-top: 10px; text-align: center;
+                                    page-break-inside: avoid;">
+                            <img
+                                t-att-src="'/hb_institute_core/static/description/proprietor_signature.PNG'"
+                                style="max-width: 170px; max-height: 65px;" />
+                            <div style="border-top: 1px solid #444; padding-top: 4px;">
+                                <strong>Authorized Signatory</strong>
+                            </div>
+                            <div>Proprietor, H.B.INSTITUTE</div>
+                        </div> -->
+
+                        <!-- Authorized Signature: enlarged and separated from the line -->
+                        <div
+                            style="width: 100%; margin-top: 28px; page-break-inside: avoid;
+            overflow: hidden;">
+
+                            <div style="width: 230px; float: right; text-align: center;">
+
+                                <div style="height: 115px; display: block; text-align: center;">
+                                    <img
+                                        t-att-src="'/hb_institute_core/static/description/proprietor_signature.PNG'"
+                                        style="width: 210px; height: 105px; object-fit: contain;" />
+                                </div>
+
+                                <div
+                                    style="border-top: 1px solid #444; padding-top: 7px; margin-top: 5px;">
+                                    <strong>Authorized Signatory</strong>
+                                    <div style="font-size: 11px; margin-top: 3px;">
+                                        Proprietor, H.B.INSTITUTE
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div style="clear: both;"></div>
+
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

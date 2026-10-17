@@ -1,3 +1,5 @@
+# pyright: reportUnusedExpression=false
+
 {
     "name": "H.B.INSTITUTE Core",
     "version": "1.0.0",
@@ -23,6 +25,12 @@
         'views/course_views.xml',
         'views/batch_views.xml',
         'views/enrollment_views.xml',
+        "views/fee_views.xml",
+        "views/payment_views.xml",
+        "reports/payment_receipt_report.xml",
+        "report/payment_receipt_templates.xml",
+        "views/attendance_views.xml",
+        "views/attendance_summary_views.xml",
     ],
     "installable": True,
     "application": True,

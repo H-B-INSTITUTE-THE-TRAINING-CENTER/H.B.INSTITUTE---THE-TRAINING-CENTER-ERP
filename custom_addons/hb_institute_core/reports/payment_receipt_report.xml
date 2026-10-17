@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_payment_receipt" model="ir.actions.report">
+        <field name="name">Payment Receipt</field>
+        <field name="model">payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hb_institute_core.payment_receipt_template</field>
+        <field name="report_file">hb_institute_core.payment_receipt_template</field>
+        <field name="binding_model_id" ref="model_payment"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Payment Receipt - %s' % (object.name)</field>
+    </record>
+
+</odoo>

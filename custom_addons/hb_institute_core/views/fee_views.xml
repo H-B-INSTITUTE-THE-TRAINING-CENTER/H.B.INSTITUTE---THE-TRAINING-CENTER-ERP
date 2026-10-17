@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- =====================================================
+         Fee List View
+         ===================================================== -->
+
+    <record id="view_fee_list" model="ir.ui.view">
+        <field name="name">fee.list</field>
+        <field name="model">fee</field>
+        <field name="arch" type="xml">
+            <list string="Fees">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="enrollment_id"/>
+                <field name="total_fees"/>
+                <field name="discount"/>
+                <field name="final_fees"/>
+                <field name="amount_paid"/>
+                <field name="balance"/>
+                <field name="payment_status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- =====================================================
+         Fee Form View
+         ===================================================== -->
+
+    <record id="view_fee_form" model="ir.ui.view">
+        <field name="name">fee.form</field>
+        <field name="model">fee</field>
+        <field name="arch" type="xml">
+            <form string="Fee">
+                <sheet>
+                    <!-- Fee Reference -->
+                    <div class="oe_title">
+                        <label for="name" string="Fee Reference" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. FEE/TEST/001"/>
+                        </h1>
+                    </div>
+
+                    <!-- Student & Enrollment -->
+                    <group>
+                        <group>
+                            <field name="student_id"/>
+                            <field name="enrollment_id"/>
+                        </group>
+                    </group>
+
+                    <!-- Fee Details -->
+                    <group string="Fee Details">
+                        <group>
+                            <field name="total_fees"/>
+                            <field name="discount"/>
+                            <field name="final_fees"/>
+                        </group>
+
+                        <group>
+                            <field name="amount_paid"/>
+                            <field name="balance"/>
+                            <field name="payment_status"/>
+                        </group>
+
+                    </group>
+
+                    <!-- Payments -->
+                    <notebook>
+                        <page string="Payments">
+                            <field name="payment_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="student_id"/>
+                                    <field name="payment_date"/>
+                                    <field name="amount"/>
+                                    <field name="payment_method"/>
+                                    <field name="reference"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <!-- Notes -->
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- =====================================================
+         Fee Action
+         ===================================================== -->
+
+    <record id="action_fee" model="ir.actions.act_window">
+        <field name="name">Fees</field>
+        <field name="res_model">fee</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- =====================================================
+         Fee Menu
+         ===================================================== -->
+
+    <menuitem
+        id="menu_fee"
+        name="Fees"
+        parent="menu_hb_institute_root"
+        action="action_fee"
+        sequence="50"/>
+
+</odoo>

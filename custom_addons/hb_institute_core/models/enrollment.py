@@ -33,7 +33,7 @@ class Enrollment(models.Model):
         "student",
         string = "Student",
         required = True,
-        ondelte = "restrict"
+        ondelete = "restrict"
     )
 
     course_id = fields.Many2one(
@@ -75,7 +75,7 @@ class Enrollment(models.Model):
             ("confirmed","Confirmed"),
             ("completed","Completed"),
             ("cancelled","Cancelled")
-        ],
+        ], # type: ignore
         string = "Status",
         default = "draft",
         required = True
@@ -93,7 +93,7 @@ class Enrollment(models.Model):
     @api.constrains("course_id","batch_id")
     def _check_batch_course(self):
         for record in self:
-            if record.course_id and record.batch_id and record.batch_id.course_id != record.course_id:
+            if record.course_id and record.batch_id and record.batch_id.course_id != record.course_id: # type: ignore
                 raise ValidationError(
                     "The selected batch does not belong to the selected course"
                 )
@@ -122,7 +122,7 @@ class Enrollment(models.Model):
     def _check_batch_status(self):
         for record in self:
             if record.batch_id:
-                if record.batch_id.status in ("completed","cancelled"):
+                if record.batch_id.status in ("completed","cancelled"): # type: ignore
                     raise ValidationError(
                         "You cannot enroll a student into a completed or cancelled batch."
                     )
@@ -130,7 +130,7 @@ class Enrollment(models.Model):
     @api.constrains("batch_id")
     def _check_batch_active(self):
         for record in self:
-            if record.batch_id and not record.batch_id.active:
+            if record.batch_id and not record.batch_id.active: # type: ignore
                 raise ValidationError(
                     "You cannot enroll a student into an inactive batch."
                 )
@@ -148,7 +148,7 @@ class Enrollment(models.Model):
                 ("id","!=",record.id)
             ])
 
-            if confirmed_enrollments >= record.batch_id.capacity:
+            if confirmed_enrollments >= record.batch_id.capacity: # type: ignore
                 raise ValidationError(
                     "This batch has reached its maximum capacity."
                 )
@@ -157,12 +157,32 @@ class Enrollment(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("admission_number", "New") == "New":
-                vals["admission_number"] = self.env["ir.sequence"].next_by_code("enrollment.sequence") or "New"
+                vals["admission_number"] = self.env["ir.sequence"].next_by_code("enrollment.sequence") or "New" # type: ignore
         return super().create(vals_list)
 
     def action_confirm(self):
+        Fee = self.env['fee']
         for record in self:
+            # Prevent duplicate fee records for this enrollment.
+            existing_fee = Fee.search([
+                 ("enrollment_id","=",record.id)
+             ],limit=1)
+
+            if not existing_fee:
+                Fee.create(
+                    {
+                    "name":f"FEE-{record.admission_number}",
+                    "student_id":record.student_id.id,
+                    "enrollment_id":record.id,
+                    "total_fees":record.course_fee,
+                    "discount":record.discount
+                    }
+                )
+            
+            # Update the enrollment status.
             record.status = "confirmed"
+
+            # Update the student's status and current course/batch.
             record.student_id.write({
                 "status":"active",
                 "course_id":record.course_id.id,
