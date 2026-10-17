@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Assignment Search -->
+    <record id="view_assignment_search" model="ir.ui.view">
+        <field name="name">assignment.search</field>
+        <field name="model">assignment</field>
+        <field name="arch" type="xml">
+            <search string="Search Assignments">
+                <field name="name" />
+                <field name="course_id" />
+                <field name="batch_id" />
+
+                <filter name="filter_overdue"
+                    string="Overdue"
+                    domain="[('overdue', '=', True)]" />
+
+                <filter name="filter_active"
+                    string="Active"
+                    domain="[('active', '=', True)]" />
+
+                <separator />
+
+                <filter name="group_course"
+                    string="Course"
+                    context="{'group_by': 'course_id'}" />
+
+                <filter name="group_batch"
+                    string="Batch"
+                    context="{'group_by': 'batch_id'}" />
+            </search>
+        </field>
+    </record>
+    <!-- Assignment List -->
+    <record id="view_assignment_list" model="ir.ui.view">
+        <field name="name">assignment.list</field>
+        <field name="model">assignment</field>
+        <field name="arch" type="xml">
+            <list string="Assignments">
+                <field name="name" />
+                <field name="course_id" />
+                <field name="batch_id" />
+                <field name="assigned_date" />
+                <field name="deadline" />
+                <field name="submitted_count" />
+                <field name="pending_count" />
+                <field name="evaluated_count" />
+                <field name="overdue" widget="boolean_toggle" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Assignment Form -->
+    <record id="view_assignment_form" model="ir.ui.view">
+        <field name="name">assignment.form</field>
+        <field name="model">assignment</field>
+        <field name="arch" type="xml">
+            <form string="Assignment">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="course_id" />
+                            <field name="batch_id"
+                                domain="[('course_id', '=', course_id)]" />
+                        </group>
+                        <group>
+                            <field name="assigned_date" />
+                            <field name="deadline" />
+                            <field name="active" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Instructions">
+                            <field name="description" />
+                        </page>
+
+                        <page string="Student Submissions">
+                            <field name="submission_ids">
+                                <list>
+                                    <field name="student_id" />
+                                    <field name="batch_id" />
+                                    <field name="submitted_date" />
+                                    <field name="status" />
+                                    <field name="evaluated_by" />
+                                    <field name="evaluated_date" />
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Internal Notes">
+                            <field name="notes" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Assignment Submission Search -->
+    <record id="view_assignment_submission_search"
+        model="ir.ui.view">
+        <field name="name">assignment.submission.search</field>
+        <field name="model">assignment.submission</field>
+        <field name="arch" type="xml">
+            <search string="Search Submissions">
+                <field name="assignment_id" />
+                <field name="student_id" />
+                <field name="course_id" />
+                <field name="batch_id" />
+
+                <filter name="filter_pending"
+                    string="Pending"
+                    domain="[('status', '=', 'pending')]" />
+
+                <filter name="filter_submitted"
+                    string="Submitted"
+                    domain="[('status', '=', 'submitted')]" />
+
+                <filter name="filter_late"
+                    string="Submitted Late"
+                    domain="[('status', '=', 'late')]" />
+
+                <filter name="filter_evaluated"
+                    string="Evaluated"
+                    domain="[('status', '=', 'evaluated')]" />
+
+                <separator />
+
+                <filter name="group_status"
+                    string="Status"
+                    context="{'group_by': 'status'}" />
+
+                <filter name="group_batch"
+                    string="Batch"
+                    context="{'group_by': 'batch_id'}" />
+            </search>
+        </field>
+    </record>
+    <!-- Submission List -->
+    <record id="view_assignment_submission_list" model="ir.ui.view">
+        <field name="name">assignment.submission.list</field>
+        <field name="model">assignment.submission</field>
+        <field name="arch" type="xml">
+            <list string="Assignment Submissions">
+                <field name="assignment_id" />
+                <field name="student_id" />
+                <field name="course_id" />
+                <field name="batch_id" />
+                <field name="submitted_date" />
+                <field name="status" />
+                <field name="evaluated_by" />
+                <field name="evaluated_date" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Submission Form -->
+    <record id="view_assignment_submission_form" model="ir.ui.view">
+        <field name="name">assignment.submission.form</field>
+        <field name="model">assignment.submission</field>
+        <field name="arch" type="xml">
+            <form string="Assignment Submission">
+                <header>
+                    <button name="action_mark_submitted"
+                        type="object"
+                        string="Mark Submitted"
+                        class="btn-primary"
+                        invisible="status != 'pending'" />
+
+                    <button name="action_evaluate"
+                        type="object"
+                        string="Evaluate"
+                        class="btn-primary"
+                        invisible="status not in ['submitted', 'late']" />
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="pending,submitted,late,evaluated" />
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="assignment_id" />
+                            <field name="student_id"
+                                domain="[('batch_id', '=', batch_id)]" />
+                            <field name="course_id" readonly="1" />
+                            <field name="batch_id" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="submitted_date" />
+                            <field name="evaluated_by" readonly="1" />
+                            <field name="evaluated_date" readonly="1" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Submitted Work">
+                            <field name="attachment" filename="attachment_filename" />
+                            <field name="attachment_filename" invisible="1" />
+                        </page>
+
+                        <page string="Evaluation">
+                            <field name="feedback" />
+                        </page>
+
+                        <page string="Internal Notes">
+                            <field name="notes" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Assignments Action -->
+    <record id="action_assignment" model="ir.actions.act_window">
+        <field name="name">Assignments</field>
+        <field name="res_model">assignment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Submissions Action -->
+    <record id="action_assignment_submission" model="ir.actions.act_window">
+        <field name="name">Assignment Submissions</field>
+        <field name="res_model">assignment.submission</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menus -->
+    <menuitem id="menu_assignment"
+        name="Assignments"
+        parent="menu_hb_institute_root"
+        action="action_assignment"
+        sequence="50" />
+
+    <menuitem id="menu_assignment_submission"
+        name="Assignment Submissions"
+        parent="menu_hb_institute_root"
+        action="action_assignment_submission"
+        sequence="51" />
+
+</odoo>

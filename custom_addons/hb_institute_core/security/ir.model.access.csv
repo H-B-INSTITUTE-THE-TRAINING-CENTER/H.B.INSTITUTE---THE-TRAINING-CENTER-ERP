@@ -7,3 +7,5 @@ access_fee_user,access.fee.user,model_fee,base.group_user,1,1,1,1
 access_payment_user,access.payment.user,model_payment,base.group_user,1,1,1,1
 access_attendance_user,access.attendance.user,model_attendance,base.group_user,1,1,1,1
 access_attendance_summary_wizard_user,access.attendance.summary.wizard.user,model_attendance_summary_wizard,base.group_user,1,1,1,1
+access_assignment_user,assignment user,model_assignment,base.group_user,1,1,1,1
+access_assignment_submission_user,assignment submission user,model_assignment_submission,base.group_user,1,1,1,1

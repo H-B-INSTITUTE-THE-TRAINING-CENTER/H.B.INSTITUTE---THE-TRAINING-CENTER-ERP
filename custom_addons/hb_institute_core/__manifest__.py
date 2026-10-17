@@ -31,6 +31,7 @@
         "report/payment_receipt_templates.xml",
         "views/attendance_views.xml",
         "views/attendance_summary_views.xml",
+        "views/assignment_views.xml"
     ],
     "installable": True,
     "application": True,

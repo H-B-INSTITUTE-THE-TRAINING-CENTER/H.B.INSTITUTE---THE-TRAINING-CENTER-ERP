@@ -6,3 +6,5 @@ from . import fee
 from . import payment
 from . import attendance
 from . import attendance_summary
+from . import assignment
+from . import assignment_submission
