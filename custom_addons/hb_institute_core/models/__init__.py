@@ -9,3 +9,4 @@ from . import attendance_summary
 from . import assignment
 from . import assignment_submission
 from . import examination
+from . import certificate

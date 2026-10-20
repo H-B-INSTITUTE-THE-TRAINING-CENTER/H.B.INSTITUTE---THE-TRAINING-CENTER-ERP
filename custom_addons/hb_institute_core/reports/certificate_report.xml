@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_certificate" model="ir.actions.report">
+        <field name="name">Course Certificate</field>
+        <field name="model">certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hb_institute_core.certificate_template</field>
+        <field name="report_file">hb_institute_core.certificate_template</field>
+        <field name="print_report_name">'Certificate - %s' % (object.certificate_number)</field>
+        <field name="paperformat_id" ref="hb_institute_core.paperformat_certificate_landscape"/>
+    </record>
+
+</odoo>

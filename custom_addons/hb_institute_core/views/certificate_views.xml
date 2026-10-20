@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Certificate List View -->
+    <record id="view_certificate_list" model="ir.ui.view">
+        <field name="name">certificate.list</field>
+        <field name="model">certificate</field>
+        <field name="arch" type="xml">
+            <list string="Certificates">
+                <field name="certificate_number" />
+                <field name="student_id" />
+                <field name="course_id" />
+                <field name="batch_id" />
+                <field name="certificate_date" />
+                <field name="status" widget="badge" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Certificate Form View -->
+    <record id="view_certificate_form" model="ir.ui.view">
+        <field name="name">certificate.form</field>
+        <field name="model">certificate</field>
+        <field name="arch" type="xml">
+            <form string="Certificate">
+                <header>
+                    <button name="action_issue"
+                        string="Issue Certificate"
+                        type="object"
+                        class="btn-primary"
+                        invisible="status != 'draft'" />
+
+                    <button name="action_print_certificate"
+                        string="Print Certificate"
+                        type="object"
+                        class="btn-primary"
+                        invisible="status != 'issued'" />
+
+                    <button name="action_revoke"
+                        string="Revoke Certificate"
+                        type="object"
+                        invisible="status != 'issued'" />
+
+                    <button name="action_reset_to_draft"
+                        string="Reset to Draft"
+                        type="object"
+                        invisible="status != 'revoked'" />
+
+                    <field name="status"
+                        widget="statusbar"
+                        statusbar_visible="draft,issued,revoked" />
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="certificate_number" />
+                        <h1>
+                            <field name="certificate_number" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Enrollment Details">
+                            <field name="enrollment_id"
+                                domain="[('status', '=', 'completed')]"
+                                readonly="status != 'draft'" />
+                            <field name="student_id" />
+                            <field name="course_id" />
+                            <field name="batch_id" />
+                        </group>
+
+                        <group string="Certificate Details">
+                            <field name="certificate_date"
+                                readonly="status != 'draft'" />
+                        </group>
+                    </group>
+
+                    <group>
+                        <field name="notes"
+                            placeholder="Optional certificate notes..." />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Certificate Search View -->
+    <record id="view_certificate_search" model="ir.ui.view">
+        <field name="name">certificate.search</field>
+        <field name="model">certificate</field>
+        <field name="arch" type="xml">
+            <search string="Search Certificates">
+                <field name="certificate_number" />
+                <field name="student_id" />
+                <field name="course_id" />
+
+                <filter name="filter_draft"
+                    string="Draft"
+                    domain="[('status', '=', 'draft')]" />
+
+                <filter name="filter_issued"
+                    string="Issued"
+                    domain="[('status', '=', 'issued')]" />
+
+                <filter name="filter_revoked"
+                    string="Revoked"
+                    domain="[('status', '=', 'revoked')]" />
+            </search>
+        </field>
+    </record>
+
+    <!-- Certificate Action -->
+    <record id="action_certificate" model="ir.actions.act_window">
+        <field name="name">Certificates</field>
+        <field name="res_model">certificate</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_certificate_search" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first student certificate.
+            </p>
+        </field>
+    </record>
+
+    <!-- Certificate Menu -->
+    <menuitem id="menu_certificate"
+        name="Certificates"
+        parent="menu_hb_institute_root"
+        action="action_certificate"
+        sequence="53" />
+
+</odoo>

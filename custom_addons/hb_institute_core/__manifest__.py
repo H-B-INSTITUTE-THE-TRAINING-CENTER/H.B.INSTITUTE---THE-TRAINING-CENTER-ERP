@@ -32,7 +32,12 @@
         "views/attendance_views.xml",
         "views/attendance_summary_views.xml",
         "views/assignment_views.xml",
-        "views/examination_views.xml"
+        "views/examination_views.xml",
+        "data/certificate_sequence.xml",
+        "reports/certificate_paperformat.xml",
+        "views/certificate_views.xml",
+        "reports/certificate_report.xml",
+        "report/certificate_templates.xml",
     ],
     "installable": True,
     "application": True,

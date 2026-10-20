@@ -46,7 +46,7 @@ class Attendance(models.Model):
     _sql_constraints = [
             (
                 "unique_student_batch_date",
-                "unique(student_id, batch_id, attendance_date)",
+                "UNIQUE(student_id, batch_id, attendance_date)",
                 "Attendance for this student, batch, and date already exists.",
             ),
         ]
