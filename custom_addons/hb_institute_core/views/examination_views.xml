@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Examination List View -->
+    <record id="view_examination_list" model="ir.ui.view">
+        <field name="name">examination.list</field>
+        <field name="model">examination</field>
+        <field name="arch" type="xml">
+            <list string="Examinations">
+                <field name="name" />
+                <field name="course_id" />
+                <field name="batch_id" />
+                <field name="exam_date" />
+                <field name="start_time" widget="float_time" />
+                <field name="duration_minutes" />
+                <field name="exam_type" />
+                <field name="status" widget="badge" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Examination Form View -->
+    <record id="view_examination_form" model="ir.ui.view">
+        <field name="name">examination.form</field>
+        <field name="model">examination</field>
+        <field name="arch" type="xml">
+            <form string="Examination">
+                <header>
+                    
+                    
+                    <button name="action_schedule"
+                            string="Schedule"
+                            type="object"
+                            class="btn-primary"
+                            invisible="status != 'draft'"
+                            confirm="Are you sure you want to schedule this examination?"
+                            help="message" />
+                
+                    <button name="action_complete"
+                            string="Mark Complete"
+                            type="object"
+                            class="btn-success"
+                            invisible="status != 'scheduled'"
+                            help="message" />
+                    
+                    <button name="action_cancel"
+                            string="Cancel Examination"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="status not in ['draft','scheduled']"
+                            confirm="Are you sure you want to cancel this examination?"
+                            help="message" />
+                    
+                    
+                    <field name="status" widget="statusbar"
+                        statusbar_visible="draft,scheduled,completed,cancelled" />
+                </header>
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" placeholder="e.g. Python Practical Exam" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Examination Details">
+                            <field name="course_id" />
+                            <field name="batch_id"
+                                domain="[('course_id', '=', course_id)]" />
+                            <field name="exam_type" />
+                        </group>
+
+                        <group string="Schedule">
+                            <field name="exam_date" />
+                            <field name="start_time" widget="float_time" />
+                            <field name="duration_minutes" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"
+                                placeholder="Add examination instructions or notes..." />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Examination Action -->
+    <record id="action_examination" model="ir.actions.act_window">
+        <field name="name">Examinations</field>
+        <field name="res_model">examination</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first examination.
+            </p>
+        </field>
+    </record>
+
+    <!-- Examination Menu -->
+    <menuitem id="menu_examination"
+        name="Examinations"
+        parent="menu_hb_institute_root"
+        action="action_examination"
+        sequence="52" />
+</odoo>
