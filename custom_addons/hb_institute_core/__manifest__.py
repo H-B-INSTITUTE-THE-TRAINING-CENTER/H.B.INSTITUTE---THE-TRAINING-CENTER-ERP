@@ -38,6 +38,7 @@
         "views/certificate_views.xml",
         "reports/certificate_report.xml",
         "report/certificate_templates.xml",
+        "report/certificate_verification_templates.xml",
     ],
     "installable": True,
     "application": True,

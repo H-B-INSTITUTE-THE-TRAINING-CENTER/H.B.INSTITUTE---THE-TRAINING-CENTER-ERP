@@ -1,5 +1,9 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, UserError
+import secrets
+import base64
+from io import BytesIO
+import qrcode
 
 class Certificate(models.Model):
     _name = "certificate"
@@ -15,6 +19,11 @@ class Certificate(models.Model):
     _enrollment_unique = models.Constraint(
         "UNIQUE(enrollment_id)",
         "A certificate already exists for this enrollment."
+    )
+
+    _verification_token_unique = models.Constraint(
+        "UNIQUE(verification_token)",
+        "Verification token must be unique"
     )
 
     certificate_number = fields.Char(
@@ -77,6 +86,60 @@ class Certificate(models.Model):
     )
 
     notes = fields.Text(string = "Notes")
+
+    verification_token = fields.Char(
+        string = "Verification Token",
+        required=True, 
+        readonly=True,
+        copy=False,
+        index=True,
+        default = lambda self: secrets.token_urlsafe(32)
+    )
+
+    verification_url = fields.Char(
+        string = "Verification URL",
+        compute = "_compute_verification_url"
+    )
+
+    qr_code = fields.Binary(
+        string = "Verification QR Code",
+        compute = "_compute_qr_code"
+    )
+
+    @api.depends("verification_token")
+    def _compute_verification_url(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param("web.base.url")
+        for record in self:
+            record.verification_url = (
+                f"{base_url}/verify-certificate/{record.verification_token}"
+                if base_url and record.verification_token
+                else False
+            )
+
+    @api.depends("verification_token")
+    def _compute_qr_code(self):
+        for record in self:
+            if not record.verification_url:
+                record.qr_code = False
+                continue
+            qr = qrcode.QRCode(
+                version=None,
+                error_correction=qrcode.constants.ERROR_CORRECT_M,
+                box_size=10,
+                border=4
+            )
+
+            qr.add_data(record.verification_url)
+            qr.make(fit=True)
+
+            image = qr.make_image(
+                fill_color = "black",
+                back_color = "white"
+            )
+
+            buffer = BytesIO()
+            image.save(buffer,format="PNG") # type: ignore
+            record.qr_code = base64.b64encode(buffer.getvalue())
 
     @api.model_create_multi
     def create(self, vals_list):

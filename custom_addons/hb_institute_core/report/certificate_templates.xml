@@ -194,7 +194,7 @@
                             <div
                                 style="position: absolute;
                                         right: 9mm;
-                                        bottom: 24mm;
+                                        bottom: 32mm;
                                         width: 70mm;
                                         text-align: right;
                                         font-size: 10px;
@@ -214,19 +214,28 @@
                                     </strong>
                                 </div>
                             </div>
-
+                            <!-- Certificate verification QR code -->
+                            <div
+                                style="position: absolute;
+                                        right: 39mm;
+                                        bottom: 7mm;
+                                        width: 16mm;
+                                        text-align: center;">
+                                <img t-att-src="image_data_uri(o.qr_code)"
+                                    style="width: 25mm; height: 25mm;" />
+                            </div>
                             <!-- Logo, with clear separation from certificate ID -->
                             <div
                                 style="position: absolute;
-                                        right: 9mm;
+                                        right: 12mm;
                                         bottom: 7mm;
-                                        width: 25mm;
-                                        height: 16mm;
+                                        width: 16mm;
+                                        
                                         text-align: right;">
                                 <img
                                     t-att-src="'/hb_institute_core/static/description/hb_logo.png'"
                                     style="width: 25mm;
-                                           height: 16mm;" />
+                                           height: 25mm;" />
                             </div>
 
                         </div>
